@@ -224,7 +224,7 @@ export function renderMidSections(voteResults = null, votedOption = null, birthd
           <div class="wooteco-news-video-wrap">
             <iframe
               class="wooteco-news-video"
-              src="https://www.youtube.com/embed/wtEnb8qD4wc?start=769"
+              src="https://youtu.be/wtEnb8qD4wc?si=W01Du0C23OvsvP0R"
               title="우테코 소식 영상"
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
