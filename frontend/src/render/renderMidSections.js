@@ -1,30 +1,50 @@
-import { BIRTHDAY_CREWS } from '../data/crew-data.js';
+import juneBirthdayHallImage from '../assets/june-birthday-hall.png';
+import daegilBirthdayHallImage from '../assets/daegil-birthday-hall.jpeg';
 
 const MOCK_YESTERDAY = [
   {
-    name: "포비",
-    realName: "박재성",
-    status: "checkin", // "checkin" or "checkout"
-    time: "08:52",
+    name: "피노, 코코",
+    realName: "",
+    status: "checkin",
+    time: "08:00",
     color: "#1e3a8a",
-    msg: "오늘도 페어와 즐겁게 레거시 코드를 파헤쳐봅시다! 다들 파이팅!"
+    msg: "오전 8시 첫 번째 입실자로 입실했습니다."
   },
   {
-    name: "준태",
-    realName: "김준태",
+    name: "정콩이",
+    realName: "",
     status: "checkout",
-    time: "22:15",
+    time: "23:00",
     color: "#991b1b",
-    msg: "드디어 테스트 통과... 가벼운 마음으로 칼퇴합니다. 둠바!"
+    msg: "오후 11시 마지막 퇴실자임을 확인 후 퇴실했습니다."
   }
 ];
 
 export const CAFETERIA_MENUS = {
-  C: "🍽️ 수제 돈까스 & 마크니 커리",
-  D: "🍜 전통 육개장 칼국수 & 왕만두"
+  C: "🍽️ 쇠고기 우거지 해장국",
+  D: "🍜 포장마차 잔치국수"
 };
 
-export function renderMidSections(voteResults = null, votedOption = null) {
+const JUNE_BIRTHDAY_CREWS = [
+  {
+    name: "무빙",
+    month: 6,
+    day: 25,
+    image: juneBirthdayHallImage
+  },
+  {
+    name: "대길",
+    month: 6,
+    day: 30,
+    image: daegilBirthdayHallImage
+  }
+];
+
+export function getJuneBirthdayCrewCount() {
+  return JUNE_BIRTHDAY_CREWS.length;
+}
+
+export function renderMidSections(voteResults = null, votedOption = null, birthdaySlideIndex = 0) {
   // 1. Hall of fame (yesterday checkin)
   const hallListHtml = MOCK_YESTERDAY.map(item => {
     const statusBadge = item.status === 'checkin'
@@ -37,33 +57,61 @@ export function renderMidSections(voteResults = null, votedOption = null) {
         <div class="hall-crew-info">
           <div class="hall-crew-name-row">
             <span class="hall-nickname">${item.name}</span>
-            <span class="hall-realname">(${item.realName})</span>
+            ${item.realName ? `<span class="hall-realname">(${item.realName})</span>` : ''}
             ${statusBadge}
             <span class="hall-time">${item.time}</span>
           </div>
-          <p class="hall-msg">"${item.msg}"</p>
+          <p class="hall-msg">${item.msg}</p>
         </div>
       </div>
     `;
   }).join('');
 
-  // 2. Birthdays of the month
-  const thisMonth = new Date().getMonth() + 1;
-  const birthdayCrews = BIRTHDAY_CREWS.filter(c => c.month === thisMonth);
+  // 2. June birthday hall of fame
+  const birthdayMonth = 6;
+  const birthdayCrews = JUNE_BIRTHDAY_CREWS;
+  const normalizedBirthdayIndex = birthdayCrews.length > 0
+    ? ((birthdaySlideIndex % birthdayCrews.length) + birthdayCrews.length) % birthdayCrews.length
+    : 0;
+  const birthdayCrew = birthdayCrews[normalizedBirthdayIndex];
   let birthdayHtml = '';
   if (birthdayCrews.length > 0) {
-    const names = birthdayCrews.map(c => c.name).join(', ');
+    const dotsHtml = birthdayCrews.map((crew, index) => `
+      <button
+        class="birthday-carousel-dot ${index === normalizedBirthdayIndex ? 'active' : ''}"
+        type="button"
+        data-birthday-index="${index}"
+        aria-label="${crew.name} 생일자 보기"
+      ></button>
+    `).join('');
+
     birthdayHtml = `
-      <div class="birthday-content-wrap">
-        <div class="birthday-cake-icon">🎂</div>
-        <div class="birthday-names">${names}</div>
-        <div class="birthday-blurb">${thisMonth}월의 생일을 진심으로 축하합니다!<br>오늘 보도국의 주인공으로 선정된 크루들에게 응원의 인사를 건네보세요. 🎉</div>
+      <div class="birthday-content-wrap birthday-hall-content">
+        <div class="birthday-hall-frame">
+          <div class="birthday-hall-laurel" aria-hidden="true">
+            <div class="laurel-center">
+              <div class="laurel-stars">★ ★ ★</div>
+              <div class="laurel-title">생일의 전당</div>
+              <div class="laurel-subtitle">JUNE BIRTHDAY</div>
+            </div>
+          </div>
+          <button class="birthday-carousel-button birthday-carousel-prev" type="button" data-birthday-direction="-1" aria-label="이전 생일자 보기">‹</button>
+          <button class="birthday-carousel-button birthday-carousel-next" type="button" data-birthday-direction="1" aria-label="다음 생일자 보기">›</button>
+          <img class="birthday-hall-image" src="${birthdayCrew.image}" alt="6월 생일자 ${birthdayCrew.name} 명예의 전당 사진">
+          <div class="birthday-hall-copy">
+            <div class="birthday-names">${birthdayCrew.name} <span class="birthday-date">(${birthdayCrew.month}월 ${birthdayCrew.day}일)</span></div>
+            <div class="birthday-blurb">${birthdayMonth}월의 생일을 진심으로 축하합니다!<br>오늘 보도국의 주인공으로 선정된 크루에게 응원의 인사를 건네보세요.</div>
+          </div>
+        </div>
+        <div class="birthday-carousel-dots" aria-label="생일자 목록">
+          ${dotsHtml}
+        </div>
       </div>
     `;
   } else {
     birthdayHtml = `
       <div class="birthday-content-wrap">
-        <p class="birthday-empty">${thisMonth}월에 생일인 크루가 없네요. 다음 달을 기다려주세요!</p>
+        <p class="birthday-empty">${birthdayMonth}월에 생일인 크루가 없네요. 다음 달을 기다려주세요!</p>
       </div>
     `;
   }
@@ -147,8 +195,8 @@ export function renderMidSections(voteResults = null, votedOption = null) {
         </div>
       </div>
       <div class="news-section-box">
-        <span class="news-section-box-badge" style="background-color: #9d174d">이달의 생일</span>
-        <h2 class="news-section-box-title">🎂 이번달 주인공</h2>
+        <span class="news-section-box-badge" style="background-color: #9d174d">6월의 생일</span>
+        <h2 class="news-section-box-title">🏛️ 생일자 명예의 전당</h2>
         <div id="birthday-section-content">
           ${birthdayHtml}
         </div>

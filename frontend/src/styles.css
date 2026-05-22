@@ -92,15 +92,27 @@ body {
 
 /* 1. Ears */
 .newspaper-ears {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
+  column-gap: 1rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: bold;
 }
 
+.ear-publisher {
+  justify-self: start;
+}
+
+.ear-date {
+  justify-self: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
 .ear-price {
+  justify-self: end;
   background-color: var(--accent-red);
   color: var(--bg-cream);
   padding: 2px 6px;
@@ -403,6 +415,7 @@ body {
   display: flex;
   align-items: center;
   gap: 4px;
+  flex-wrap: wrap;
 }
 
 .hall-nickname {
@@ -455,6 +468,186 @@ body {
   text-align: center;
 }
 
+.birthday-hall-content {
+  justify-content: flex-start;
+  gap: 10px;
+  min-height: 300px;
+  padding-top: 6px;
+}
+
+.birthday-hall-ribbon {
+  align-self: stretch;
+  background: linear-gradient(90deg, #7f1d1d, #be123c, #7f1d1d);
+  color: #fff7ed;
+  border: 1px solid var(--charcoal);
+  box-shadow: 2px 2px 0 var(--charcoal);
+  font-family: var(--font-retro-jua);
+  font-size: 0.85rem;
+  padding: 5px 8px;
+  text-align: center;
+}
+
+.birthday-hall-frame {
+  width: 100%;
+  min-height: 360px;
+  border: 4px double var(--charcoal);
+  background:
+    linear-gradient(180deg, rgba(255, 251, 235, 0.96), rgba(255, 255, 255, 0.78) 34%, rgba(248, 250, 252, 0.96)),
+    #f8fafc;
+  box-shadow: inset 0 0 0 5px #fef3c7, 4px 4px 0 var(--charcoal);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 76px 8px 12px;
+}
+
+.birthday-carousel-button {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 30px;
+  height: 42px;
+  border: 1px solid var(--charcoal);
+  background-color: rgba(255, 247, 237, 0.88);
+  color: #b7791f;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--charcoal);
+  transform: translateY(-50%);
+}
+
+.birthday-carousel-button:hover {
+  background-color: #fef3c7;
+}
+
+.birthday-carousel-prev {
+  left: 8px;
+}
+
+.birthday-carousel-next {
+  right: 8px;
+}
+
+.birthday-hall-laurel {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b7791f;
+  text-shadow: 0 1px 0 #fff7ed;
+  pointer-events: none;
+}
+
+.birthday-hall-laurel::before,
+.birthday-hall-laurel::after {
+  content: "❦";
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.birthday-hall-laurel::before {
+  transform: rotate(-32deg);
+}
+
+.birthday-hall-laurel::after {
+  transform: rotate(32deg) scaleX(-1);
+}
+
+.laurel-center {
+  min-width: 128px;
+  padding: 2px 0 3px;
+  border-top: 2px solid rgba(183, 121, 31, 0.55);
+  border-bottom: 2px solid rgba(183, 121, 31, 0.55);
+}
+
+.laurel-stars {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+}
+
+.laurel-title {
+  font-family: var(--font-retro-jua);
+  font-size: 1.16rem;
+  white-space: nowrap;
+}
+
+.laurel-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  margin-top: 1px;
+}
+
+.birthday-hall-image {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 215px;
+  object-fit: contain;
+  object-position: center top;
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.birthday-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 2px;
+}
+
+.birthday-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--charcoal);
+  background-color: #e2e8f0;
+  cursor: pointer;
+  padding: 0;
+}
+
+.birthday-carousel-dot.active {
+  background-color: #b7791f;
+  transform: scale(1.2);
+}
+
+.birthday-hall-medal {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--charcoal);
+  background-color: #fef3c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  box-shadow: 2px 2px 0 var(--charcoal);
+}
+
+.birthday-hall-copy {
+  width: 100%;
+  background-color: rgba(255, 247, 237, 0.95);
+  border-top: 2px solid rgba(183, 121, 31, 0.55);
+  border-bottom: 2px solid rgba(183, 121, 31, 0.55);
+  padding: 8px 10px 9px;
+}
+
 .birthday-cake-icon {
   font-size: 2rem;
   margin-bottom: 6px;
@@ -469,9 +662,16 @@ body {
 
 .birthday-names {
   font-family: var(--font-headline);
-  font-size: 1.25rem;
+  font-size: 1.45rem;
   color: var(--accent-red);
   margin-bottom: 4px;
+}
+
+.birthday-date {
+  font-family: var(--font-retro-jua);
+  font-size: 0.9rem;
+  color: #b7791f;
+  vertical-align: middle;
 }
 
 .birthday-blurb {
@@ -673,10 +873,19 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 90px;
+  min-height: 78px;
   font-style: italic;
   padding-left: 12px;
   border-left: 4px solid var(--accent-red);
+  margin-bottom: 12px;
+}
+
+.coach-quote-label {
+  display: inline-block;
+  font-family: var(--font-retro-jua);
+  font-size: 0.8rem;
+  color: var(--accent-red);
+  margin-bottom: 6px;
 }
 
 .coach-quote-text {
@@ -692,6 +901,82 @@ body {
   color: #64748b;
   text-align: right;
   font-style: normal;
+}
+
+.guestbook-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  padding: 8px;
+  background-color: #f0fdf4;
+  border: 1px dashed #0f766e;
+}
+
+.guestbook-message-input {
+  width: 100%;
+  border: 1px solid var(--charcoal);
+  background-color: var(--paper-white);
+  color: var(--charcoal);
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  padding: 7px 8px;
+  min-width: 0;
+}
+
+.guestbook-message-input:focus {
+  outline: 2px solid rgba(15, 118, 110, 0.24);
+  outline-offset: 1px;
+}
+
+.guestbook-submit-button {
+  border: 1px solid var(--charcoal);
+  background-color: #0f766e;
+  color: var(--bg-cream);
+  font-family: var(--font-retro-jua);
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--charcoal);
+}
+
+.guestbook-submit-button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--charcoal);
+}
+
+.guestbook-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 126px;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: 8px;
+}
+
+.guestbook-entry {
+  background-color: rgba(240, 253, 244, 0.82);
+  border-left: 3px solid #0f766e;
+  border-bottom: 1px dotted var(--light-gray);
+  padding: 5px 8px;
+}
+
+.guestbook-entry:last-child {
+  border-bottom: 1px dotted var(--light-gray);
+}
+
+.guestbook-entry-message,
+.guestbook-empty {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: #334155;
+}
+
+.guestbook-empty {
+  color: #64748b;
+  font-style: italic;
+  text-align: center;
+  padding: 8px 0;
 }
 
 /* 13. Footprints Section */
@@ -810,35 +1095,6 @@ body {
   color: #64748b;
 }
 
-.footprint-sync-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: -8px;
-  margin-bottom: 12px;
-}
-
-.sync-button {
-  background-color: var(--slate-navy);
-  color: var(--bg-cream);
-  border: 1px solid var(--charcoal);
-  padding: 6px 12px;
-  font-family: var(--font-retro-jua);
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 2px 2px 0 var(--charcoal);
-}
-
-.sync-button:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--charcoal);
-}
-
-.sync-button:active {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0 var(--charcoal);
-}
-
 /* 15. Footer */
 .newspaper-footer {
   text-align: center;
@@ -866,6 +1122,14 @@ body {
 @media (max-width: 768px) {
   body {
     padding: 1rem 0.5rem;
+  }
+  .newspaper-ears {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+    text-align: center;
+  }
+  .ear-publisher, .ear-date, .ear-price {
+    justify-self: center;
   }
   .newspaper-wrapper {
     padding: 1rem;
