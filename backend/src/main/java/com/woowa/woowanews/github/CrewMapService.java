@@ -36,7 +36,7 @@ public class CrewMapService {
                         }
                         String[] parts = line.split(",");
                         if (parts.length >= 3) {
-                            String githubId = parts[0].trim();
+                            String githubId = parts[0].trim().toLowerCase();
                             String nickname = parts[2].trim();
                             mapping.put(githubId, nickname);
                         }
@@ -65,6 +65,6 @@ public class CrewMapService {
         if (githubId == null) {
             return "알수없음";
         }
-        return mapping.getOrDefault(githubId, githubId);
+        return mapping.getOrDefault(githubId.toLowerCase(), githubId);
     }
 }

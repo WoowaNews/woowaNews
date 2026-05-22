@@ -93,25 +93,30 @@ public class FootprintService {
             Map<String, Integer> commitCounts = new HashMap<>();
 
             for (GithubClient.GithubPull pull : pulls) {
-                if (pull.user != null) {
-                    participatingGithubUsers.add(pull.user.login);
-                }
+                boolean isBot = pull.user != null && isBot(pull.user.login);
 
-                LocalDateTime createdAt = toSeoulLocalDateTime(pull.createdAt);
-                if (firstPrAt == null || (createdAt != null && createdAt.isBefore(firstPrAt))) {
-                    firstPrAt = createdAt;
-                    firstPr = pull;
+                if (!isBot && pull.user != null) {
+                    participatingGithubUsers.add(pull.user.login);
                 }
 
                 if (pull.mergedAt != null) {
                     mergedPulls.add(pull);
 
+                    LocalDateTime createdAt = toSeoulLocalDateTime(pull.createdAt);
                     LocalDateTime mergedAt = toSeoulLocalDateTime(pull.mergedAt);
-                    if (createdAt != null && mergedAt != null) {
-                        long diff = Duration.between(createdAt, mergedAt).toMinutes();
-                        if (diff < fastestMergeMinutes) {
-                            fastestMergeMinutes = diff;
-                            fastestPr = pull;
+
+                    if (!isBot) {
+                        if (firstPrAt == null || (createdAt != null && createdAt.isBefore(firstPrAt))) {
+                            firstPrAt = createdAt;
+                            firstPr = pull;
+                        }
+
+                        if (createdAt != null && mergedAt != null) {
+                            long diff = Duration.between(createdAt, mergedAt).toMinutes();
+                            if (diff < fastestMergeMinutes) {
+                                fastestMergeMinutes = diff;
+                                fastestPr = pull;
+                            }
                         }
                     }
 
@@ -119,7 +124,7 @@ public class FootprintService {
                     GithubClient.GithubPullDetail detail = githubClient.fetchPullDetail(repo, pull.number);
                     totalCommits += detail.commits;
 
-                    if (pull.user != null) {
+                    if (!isBot && pull.user != null) {
                         String crewName = crewMapService.getCrewName(pull.user.login);
                         commitCounts.put(crewName, commitCounts.getOrDefault(crewName, 0) + detail.commits);
                     }
@@ -164,15 +169,17 @@ public class FootprintService {
             List<GithubClient.GithubComment> allComments = new ArrayList<>();
             allComments.addAll(issueComments);
             allComments.addAll(reviewComments);
-            footprint.setTotalComments(allComments.size());
 
             Map<String, Integer> commentCounts = new HashMap<>();
+            int nonBotCommentCount = 0;
             for (GithubClient.GithubComment comment : allComments) {
-                if (comment.user != null) {
+                if (comment.user != null && !isBot(comment.user.login)) {
+                    nonBotCommentCount++;
                     String crewName = crewMapService.getCrewName(comment.user.login);
                     commentCounts.put(crewName, commentCounts.getOrDefault(crewName, 0) + 1);
                 }
             }
+            footprint.setTotalComments(nonBotCommentCount);
 
             String mostCommentsCrew = "N/A";
             int mostCommentsCount = 0;
@@ -242,6 +249,10 @@ public class FootprintService {
         res.setMostCommits(new FootprintResponse.CountInfo(entity.getMostCommitsCrew(), entity.getMostCommitsCount()));
 
         return res;
+    }
+
+    private boolean isBot(String login) {
+        return login != null && login.endsWith("[bot]");
     }
 
     private LocalDateTime toSeoulLocalDateTime(String isoStr) {
