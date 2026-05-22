@@ -903,6 +903,17 @@ body {
   font-style: normal;
 }
 
+.coach-word-section {
+  display: flex;
+  flex-direction: column;
+}
+
+#coach-quote-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .guestbook-form {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -948,6 +959,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1;
   max-height: 126px;
   overflow-y: auto;
   padding-right: 4px;
@@ -982,6 +994,22 @@ body {
 /* 13. Footprints Section */
 .footprint-section-header {
   margin-top: 1rem;
+  padding-top: 1.15rem;
+  position: relative;
+}
+
+.footprint-section-badge {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  background-color: #0369a1;
+  color: var(--bg-cream);
+  font-family: var(--font-retro-jua);
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border: 1px solid var(--charcoal);
+  border-radius: 3px;
+  box-shadow: 2px 2px 0 var(--charcoal);
 }
 
 .footprint-section-title-wrap {
@@ -999,14 +1027,14 @@ body {
 
 .footprint-missions-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
   margin-bottom: 1rem;
 }
 
 .footprint-mission-card {
   border: 1px solid var(--charcoal);
-  padding: 1.25rem;
+  padding: 0.95rem;
   background-color: var(--paper-white);
   box-shadow: 3px 3px 0 var(--charcoal);
   position: relative;
@@ -1015,24 +1043,59 @@ body {
 .footprint-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 8px;
   border-bottom: 2px solid var(--charcoal);
   padding-bottom: 6px;
   margin-bottom: 10px;
 }
 
+.footprint-mission-title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
 .footprint-mission-label {
   font-family: var(--font-headline);
-  font-size: 1.1rem;
+  font-size: 0.98rem;
   color: var(--accent-red);
+}
+
+.footprint-track-sticker {
+  display: inline-block;
+  border: 1px solid var(--charcoal);
+  border-radius: 3px;
+  box-shadow: 1px 1px 0 var(--charcoal);
+  font-family: var(--font-retro-jua);
+  font-size: 0.68rem;
+  padding: 1px 6px;
+}
+
+.footprint-track-sticker.backend {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.footprint-track-sticker.frontend {
+  background-color: #fce7f3;
+  color: #9d174d;
+}
+
+.footprint-track-sticker.android {
+  background-color: #dcfce7;
+  color: #15803d;
 }
 
 .footprint-repo-badge {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   background-color: var(--light-gray);
   padding: 2px 6px;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 .footprint-stats-grid {
@@ -1072,17 +1135,19 @@ body {
 .footprint-rank-item {
   display: flex;
   justify-content: space-between;
+  gap: 8px;
   font-size: 0.78rem;
   border-bottom: 1px dotted var(--light-gray);
   padding-bottom: 4px;
 }
 
-.footprint-rank-item:last-child {
-  border-bottom: none;
+.footprint-rank-label {
+  flex-shrink: 0;
+  font-weight: bold;
 }
 
-.footprint-rank-label {
-  font-weight: bold;
+.footprint-rank-item:last-child {
+  border-bottom: none;
 }
 
 .footprint-rank-value {
@@ -1116,6 +1181,9 @@ body {
 @media (max-width: 900px) {
   .mid-sections-grid {
     grid-template-columns: 1fr 1fr;
+  }
+  .footprint-missions-grid {
+    grid-template-columns: 1fr;
   }
 }
 

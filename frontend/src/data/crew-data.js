@@ -1,3 +1,5 @@
+import artiTodayCrewImage from '../assets/arti-today-crew.jpeg';
+
 export const CREWS = [
   {
     name: "무빙",
@@ -13,11 +15,11 @@ export const CREWS = [
     name: "아티",
     track: "프론트엔드",
     cohort: "8기",
-    avatar: "", // No avatar to test placeholder
-    tags: ["#리액트", "#디자인", "#커피"],
-    headline: "아티 크루, CSS 레이아웃의 마법을 부리다",
-    desc: "프론트엔드 트랙의 아티 크루는 오늘 바닐라 JS로 아름다운 애니메이션을 구현하는 데 성공했다. 아티 크루는 '사용자가 웹앱을 켜는 순간 와우를 외치게 만들고 싶었다'며 화려한 스펙터클을 선보였다. 그녀의 세련된 디자인 센스는 보도국의 극찬을 받았다.",
-    callToAction: "아티의 깃허브 피알을 리뷰하고 따뜻한 격려를 나눠주세요."
+    avatar: artiTodayCrewImage,
+    tags: ["#13층", "#여전사", "#팔굽혀펴기"],
+    headline: "안녕하세요 아티입니다",
+    desc: "13층 여전사 김아티입니다. <br>키는 확실하게 162이고 팔굽혀펴기 잘합니다.",
+    callToAction: "아티 크루에게 오늘도 강한 응원의 인사를 건네보세요!"
   },
   {
     name: "요크",

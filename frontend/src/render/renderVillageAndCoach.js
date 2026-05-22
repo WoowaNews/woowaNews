@@ -45,7 +45,7 @@ export function renderVillageAndCoach(guestbookEntries = []) {
           ${villageItemsHtml}
         </div>
       </div>
-      <div class="news-section-box">
+      <div class="news-section-box coach-word-section">
         <h2 class="news-section-box-title">📢 오늘의 한마디</h2>
         <div id="coach-quote-content">
           <div class="coach-quote-label">코치의 한마디</div>
