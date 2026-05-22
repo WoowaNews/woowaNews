@@ -45,6 +45,14 @@ function getCurrentKoreanTimeLabel() {
   return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
+function mapCommentToGuestbookEntry(comment) {
+  return {
+    id: comment.id,
+    message: comment.content || comment.message || '',
+    createdAt: comment.create_at || comment.createAt || ''
+  };
+}
+
 // Render the main skeleton
 function renderSkeleton() {
   app.innerHTML = `
@@ -330,7 +338,21 @@ function updateFootprintsUI() {
   }
 }
 
-function handleGuestbookSubmit(event) {
+async function fetchComments() {
+  try {
+    const res = await fetch(`${API_BASE}/api/comments`);
+    if (res.ok) {
+      const comments = await res.json();
+      guestbookEntries = comments.map(mapCommentToGuestbookEntry);
+      saveGuestbookEntries();
+      updateVillageAndCoachUI();
+    }
+  } catch (e) {
+    console.warn("Failed to fetch comments from server, using local guestbook entries.", e);
+  }
+}
+
+async function handleGuestbookSubmit(event) {
   event.preventDefault();
 
   const messageInput = document.getElementById('guestbook-message-input');
@@ -340,6 +362,9 @@ function handleGuestbookSubmit(event) {
     messageInput?.focus();
     return;
   }
+
+  messageInput.value = '';
+  messageInput.disabled = true;
 
   guestbookEntries = [
     {
@@ -351,6 +376,26 @@ function handleGuestbookSubmit(event) {
 
   saveGuestbookEntries();
   updateVillageAndCoachUI();
+
+  try {
+    const res = await fetch(`${API_BASE}/api/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: message })
+    });
+
+    if (res.ok) {
+      await fetchComments();
+    }
+  } catch (e) {
+    console.error("Failed to post comment to server, keeping local optimistic entry.", e);
+  } finally {
+    const currentInput = document.getElementById('guestbook-message-input');
+    if (currentInput) {
+      currentInput.disabled = false;
+      currentInput.focus();
+    }
+  }
 }
 
 function updateVillageAndCoachUI() {
@@ -366,3 +411,4 @@ renderSkeleton();
 fetchLikeCount();
 fetchLunchVote();
 loadFootprints();
+fetchComments();

@@ -1,9 +1,7 @@
 import { CREWS } from '../data/crew-data.js';
-import { dailySeed } from '../utils/date-utils.js';
 
 export function getTodayCrew() {
-  const seed = dailySeed();
-  return CREWS[seed % CREWS.length];
+  return CREWS.find(crew => crew.name === '아티') || CREWS[0];
 }
 
 export function renderBreakingNews(crew, likeCount = 0) {
