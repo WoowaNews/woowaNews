@@ -5,6 +5,8 @@ import { getJuneBirthdayCrewCount, renderMidSections } from './render/renderMidS
 import { renderTrackStatus } from './render/renderTrackStatus.js';
 import { renderVillageAndCoach } from './render/renderVillageAndCoach.js';
 import { renderFootprints } from './render/renderFootprints.js';
+import { renderGames } from './render/renderGames.js';
+import { initGames } from './games.js';
 
 const app = document.querySelector('#app');
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -72,6 +74,8 @@ function renderSkeleton() {
       <div class="thick-line"></div>
       <div id="section-footprints"></div>
       <div class="double-line"></div>
+      <div id="section-games"></div>
+      <div class="double-line"></div>
       <footer class="newspaper-footer">
         <p>우아한 뉴스 | 우테코 8기 보도국 | 발행인: 우테코 크루 일동</p>
         <p class="footer-disclaimer">※ 본 신문은 우아한테크코스 8기 교육용 데모 웹앱으로, 실제 보도 내용과는 무관할 수 있습니다. 무단 전재 시 추노하러갑니다.</p>
@@ -86,8 +90,10 @@ function renderSkeleton() {
   document.getElementById('section-track').innerHTML = renderTrackStatus();
   document.getElementById('section-bottom').innerHTML = renderVillageAndCoach(guestbookEntries);
   document.getElementById('section-footprints').innerHTML = renderFootprints(footprintData);
+  document.getElementById('section-games').innerHTML = renderGames();
 
   setupEventListeners();
+  initGames(API_BASE);
 }
 
 // Set up event listeners for interactive buttons

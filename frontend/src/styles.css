@@ -1336,6 +1336,525 @@ body {
   line-height: 1.4;
 }
 
+/* ===== 게임 섹션 ===== */
+.games-section {
+  margin: 0.5rem 0;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.game-card {
+  border: 2px solid var(--charcoal);
+  background-color: var(--paper-white);
+  box-shadow: 4px 4px 0 var(--charcoal);
+  padding: 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-card-badge {
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  background-color: var(--accent-red);
+  color: var(--bg-cream);
+  font-family: var(--font-retro-jua);
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border: 1px solid var(--charcoal);
+  box-shadow: 1px 1px 0 var(--charcoal);
+}
+
+.game-card-headline {
+  font-family: var(--font-headline);
+  font-size: 1.15rem;
+  border-bottom: 2px solid var(--charcoal);
+  padding-bottom: 6px;
+  margin-bottom: 1rem;
+  margin-top: 4px;
+}
+
+.game-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 게임 공통 버튼 */
+.game-btn {
+  background-color: var(--charcoal);
+  color: var(--bg-cream);
+  border: 2px solid var(--charcoal);
+  font-family: var(--font-retro-jua);
+  font-size: 0.88rem;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  transition: all 0.15s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.game-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+}
+
+.game-btn:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}
+
+.game-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.game-btn-small {
+  font-size: 0.76rem;
+  padding: 5px 10px;
+}
+
+.game-input {
+  border: 1px solid var(--charcoal);
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  padding: 5px 8px;
+  background: var(--bg-cream);
+  flex: 1;
+  min-width: 0;
+}
+
+/* 게임 공통 랭킹 */
+.game-ranking-area {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--charcoal);
+}
+
+.game-ranking-title {
+  font-family: var(--font-retro-jua);
+  font-size: 0.78rem;
+  margin-bottom: 0.4rem;
+  color: var(--accent-blue);
+}
+
+.game-ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.game-ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  border-bottom: 1px dotted var(--light-gray);
+  padding-bottom: 3px;
+}
+
+.game-rank-num {
+  font-family: var(--font-mono);
+  font-weight: bold;
+  color: var(--accent-red);
+  min-width: 16px;
+}
+
+.game-rank-name {
+  flex: 1;
+  font-family: var(--font-serif);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-rank-value {
+  font-family: var(--font-mono);
+  color: var(--accent-blue);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.game-ranking-loading,
+.game-ranking-empty {
+  font-size: 0.74rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ===== 게임 1: 포춘쿠키 ===== */
+.fortune-cookie-wrap {
+  text-align: center;
+  padding: 1.5rem 0 0.5rem;
+}
+
+.fortune-cookie {
+  font-size: 4.5rem;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.2s ease;
+  user-select: none;
+  line-height: 1;
+}
+
+.fortune-cookie:hover {
+  transform: scale(1.12);
+}
+
+.fortune-hint {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-style: italic;
+  text-align: center;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+}
+
+@keyframes cookieShake {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  15% { transform: rotate(-10deg) scale(1.08); }
+  30% { transform: rotate(10deg) scale(1.14); }
+  45% { transform: rotate(-7deg) scale(1.1); }
+  60% { transform: rotate(7deg) scale(1.07); }
+  75% { transform: rotate(-4deg) scale(1.03); }
+  90% { transform: rotate(2deg) scale(1.01); }
+}
+
+@keyframes cookieCrumble {
+  0%   { transform: scale(1.12); opacity: 1; filter: blur(0px); }
+  30%  { transform: scale(1.28) rotate(8deg); opacity: 0.8; filter: blur(0px); }
+  70%  { transform: scale(0.75) rotate(-14deg) translateY(-24px); opacity: 0.35; filter: blur(2px); }
+  100% { transform: scale(0.2) rotate(22deg) translateY(-50px); opacity: 0; filter: blur(5px); }
+}
+
+.fortune-cookie.cookie-breaking {
+  animation: cookieShake 0.35s ease, cookieCrumble 0.5s ease 0.35s forwards;
+  pointer-events: none;
+}
+
+@keyframes fortuneCardEnter {
+  from { opacity: 0; transform: translateY(22px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.fortune-card {
+  border: 2px dashed var(--charcoal);
+  background: linear-gradient(135deg, #fffbeb, #fef9f0);
+  padding: 1rem;
+  text-align: center;
+}
+
+.fortune-card.fortune-card-enter {
+  animation: fortuneCardEnter 0.5s ease both;
+}
+
+.fortune-keyword {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--accent-blue);
+  background-color: #dbeafe;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+
+.fortune-title {
+  font-family: var(--font-headline);
+  font-size: 1.05rem;
+  color: var(--accent-red);
+  margin-bottom: 8px;
+}
+
+.fortune-content {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--charcoal);
+  font-family: var(--font-serif);
+}
+
+.fortune-breaking-ticker {
+  text-align: center;
+  font-family: var(--font-retro-jua);
+  font-size: 0.78rem;
+  color: var(--accent-red);
+  border: 1px solid var(--accent-red);
+  padding: 5px;
+  background-color: #fff1f2;
+  animation: pulse 2s infinite;
+  margin-top: auto;
+}
+
+/* ===== 게임 2: 반응속도 ===== */
+.reaction-arena-wrap {
+  margin-bottom: 0.75rem;
+}
+
+.reaction-arena {
+  min-height: 120px;
+  border: 2px solid var(--charcoal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.reaction-arena[data-state="idle"] { background-color: var(--bg-cream); cursor: default; }
+.reaction-arena[data-state="waiting"] { background-color: #dc2626; cursor: not-allowed; }
+.reaction-arena[data-state="ready"] { background-color: #16a34a; }
+.reaction-arena[data-state="error"] { background-color: #7f1d1d; cursor: not-allowed; }
+.reaction-arena[data-state="result"] { background-color: var(--bg-cream); cursor: default; }
+
+.reaction-idle-content,
+.reaction-waiting-content,
+.reaction-ready-content,
+.reaction-result-content,
+.reaction-error-content {
+  text-align: center;
+  padding: 1rem;
+  width: 100%;
+}
+
+.reaction-waiting-content p,
+.reaction-ready-content p,
+.reaction-error-content p { color: white; font-family: var(--font-headline); font-size: 1.1rem; }
+.reaction-ready-content p { font-size: 1.5rem; animation: pulse 0.5s infinite; }
+.reaction-error-sub { font-size: 0.8rem !important; opacity: 0.82; margin-top: 4px; }
+
+.reaction-desc {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  font-family: var(--font-mono);
+}
+
+@keyframes reactionShake {
+  0%, 100% { transform: translateX(0); }
+  15%  { transform: translateX(-9px); }
+  35%  { transform: translateX(9px); }
+  55%  { transform: translateX(-6px); }
+  75%  { transform: translateX(6px); }
+  90%  { transform: translateX(-2px); }
+}
+
+.reaction-shake { animation: reactionShake 0.5s ease; }
+
+.reaction-rounds {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  min-height: 22px;
+}
+
+.reaction-round-chip {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  background-color: var(--charcoal);
+  color: var(--bg-cream);
+  padding: 2px 7px;
+  border-radius: 2px;
+}
+
+.reaction-result-row {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  margin-bottom: 3px;
+}
+
+.reaction-result-avg {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  margin: 8px 0;
+  font-weight: bold;
+  color: var(--accent-blue);
+}
+
+.reaction-headline {
+  font-family: var(--font-retro-jua);
+  font-size: 0.78rem;
+  color: var(--accent-red);
+  border-top: 1px solid var(--charcoal);
+  border-bottom: 1px solid var(--charcoal);
+  padding: 5px 0;
+  margin: 8px 0;
+}
+
+.reaction-save-area {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+/* ===== 게임 3: 동전 던지기 ===== */
+.coin-game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 0.75rem;
+}
+
+.coin-probability {
+  text-align: center;
+  border: 1px dashed var(--charcoal);
+  padding: 6px 20px;
+  background-color: var(--bg-cream);
+}
+
+.coin-prob-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #64748b;
+  display: block;
+}
+
+.coin-prob-value {
+  font-family: var(--font-headline);
+  font-size: 1.4rem;
+  color: var(--accent-blue);
+}
+
+.coin-container {
+  perspective: 800px;
+  width: 88px;
+  height: 88px;
+}
+
+.coin {
+  width: 88px;
+  height: 88px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.coin-face,
+.coin-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border: 3px solid var(--charcoal);
+  box-shadow: inset 0 0 14px rgba(0,0,0,0.18);
+}
+
+.coin-face {
+  background: radial-gradient(circle at 38% 35%, #fde68a, #f59e0b 55%, #b45309);
+  color: #78350f;
+  border-color: #92400e;
+}
+
+.coin-back {
+  background: radial-gradient(circle at 38% 35%, #e2e8f0, #94a3b8 55%, #475569);
+  color: #1e293b;
+  border-color: #334155;
+  transform: rotateY(180deg);
+}
+
+.coin-streak { text-align: center; }
+
+.coin-streak-num {
+  font-family: var(--font-headline);
+  font-size: 2.6rem;
+  color: var(--charcoal);
+  display: block;
+  line-height: 1;
+}
+
+.coin-streak-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+@keyframes streakPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4); color: var(--accent-red); }
+  100% { transform: scale(1); }
+}
+
+.streak-pop { animation: streakPop 0.4s ease; }
+
+.coin-result-msg {
+  font-family: var(--font-retro-jua);
+  font-size: 0.9rem;
+  min-height: 1.3em;
+  text-align: center;
+}
+
+.coin-result-success { color: #16a34a; }
+.coin-result-fail    { color: var(--accent-red); }
+
+@keyframes resultPop {
+  0%   { transform: scale(0.75); opacity: 0; }
+  60%  { transform: scale(1.12); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.coin-result-pop { animation: resultPop 0.35s ease; }
+
+.coin-special-alert {
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  font-family: var(--font-retro-jua);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.special-glow {
+  background-color: #fef3c7;
+  border: 1px solid #f59e0b;
+  color: #92400e;
+  box-shadow: 0 0 8px rgba(245,158,11,0.35);
+}
+
+.special-breaking {
+  background-color: #fef2f2;
+  border: 2px solid var(--accent-red);
+  color: var(--accent-red);
+  animation: pulse 1s infinite;
+}
+
+.special-raid {
+  background-color: var(--charcoal);
+  border: 2px solid var(--accent-red);
+  color: #f87171;
+  animation: pulse 0.7s infinite;
+  font-size: 0.85rem;
+}
+
+.coin-save-area {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.coin-flip-btn {
+  width: 100%;
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .mid-sections-grid {
@@ -1374,7 +1893,7 @@ body {
   .breaking-news-desc {
     column-count: 1;
   }
-  .mid-sections-grid, .track-grid, .bottom-sections-grid, .footprint-missions-grid {
+  .mid-sections-grid, .track-grid, .bottom-sections-grid, .footprint-missions-grid, .games-grid {
     grid-template-columns: 1fr;
   }
   .lunch-donut-result {
