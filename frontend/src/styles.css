@@ -1,0 +1,149 @@
+:root {
+  color: #241c15;
+  background: #ede2c8;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-synthesis: none;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    linear-gradient(rgba(36, 28, 21, 0.04) 1px, transparent 1px),
+    #ede2c8;
+  background-size: 100% 12px;
+}
+
+#app {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.newspaper {
+  border: 2px solid #241c15;
+  background: #f8f0dc;
+  box-shadow: 10px 10px 0 #241c15;
+}
+
+.masthead {
+  padding: 28px 24px 20px;
+  text-align: center;
+  border-bottom: 4px double #241c15;
+}
+
+.eyebrow,
+.kicker,
+.meta {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.masthead h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(3rem, 12vw, 7.8rem);
+  line-height: 0.9;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  justify-content: center;
+  padding-top: 12px;
+  border-top: 1px solid #241c15;
+}
+
+.lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.45fr);
+  gap: 24px;
+  padding: 28px 24px;
+  border-bottom: 1px solid #241c15;
+}
+
+.lead .kicker {
+  grid-column: 1 / -1;
+  color: #8e2b1f;
+}
+
+.lead h2 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  line-height: 1;
+}
+
+.lead p:last-child {
+  align-self: end;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-left: 1px solid #241c15;
+  padding-left: 18px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.columns article {
+  min-height: 180px;
+  padding: 22px 24px;
+  border-right: 1px solid #241c15;
+}
+
+.columns article:last-child {
+  border-right: 0;
+}
+
+.columns h3 {
+  margin: 0 0 10px;
+  font-size: 1.35rem;
+}
+
+.columns p {
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  #app {
+    width: min(100% - 20px, 1120px);
+    padding: 16px 0;
+  }
+
+  .newspaper {
+    box-shadow: 5px 5px 0 #241c15;
+  }
+
+  .lead,
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .lead p:last-child {
+    border-left: 0;
+    border-top: 1px solid #241c15;
+    padding: 16px 0 0;
+  }
+
+  .columns article {
+    border-right: 0;
+    border-bottom: 1px solid #241c15;
+  }
+
+  .columns article:last-child {
+    border-bottom: 0;
+  }
+}
