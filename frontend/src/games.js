@@ -90,7 +90,12 @@ let reactionApiBase = '';
 function initReactionGame(API_BASE) {
   reactionApiBase = API_BASE;
   const startBtn = document.getElementById('reaction-start-btn');
-  if (startBtn) startBtn.addEventListener('click', startReactionGame);
+  if (startBtn) {
+    startBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      startReactionGame();
+    });
+  }
   fetchReactionRanking();
 }
 
@@ -181,7 +186,10 @@ function showReactionResult() {
     fetchReactionRanking();
   });
 
-  document.getElementById('reaction-retry-btn')?.addEventListener('click', startReactionGame);
+  document.getElementById('reaction-retry-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    startReactionGame();
+  });
 }
 
 async function fetchReactionRanking() {
