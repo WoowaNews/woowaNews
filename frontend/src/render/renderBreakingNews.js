@@ -15,7 +15,7 @@ export function renderBreakingNews(crew, likeCount = 0) {
 
   return `
     <div class="breaking-news-banner crew-of-day-banner">
-      <span class="breaking-news-label">[오늘의 주인공]</span>
+      <span class="breaking-news-label">[오늘의 크루]</span>
       <div class="crew-of-day-body">
         <div class="crew-of-day-avatar-wrap">
           ${avatarHtml}
