@@ -42,7 +42,6 @@ export function renderTrackStatus() {
 
   return `
     <div class="track-section-box">
-      <span class="news-section-box-badge" style="background-color: #0369a1">미션 현황</span>
       <h2 class="news-section-box-title">📋 교육 트랙별 미션 현황</h2>
       <div class="track-grid">
         ${cardsHtml}

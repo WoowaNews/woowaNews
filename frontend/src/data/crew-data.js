@@ -1,4 +1,4 @@
-import artiTodayCrewImage from '../assets/arti-today-crew.jpeg';
+import daegilTodayCrewImage from '../assets/daegil-birthday-hall.png';
 
 export const CREWS = [
   {
@@ -12,14 +12,14 @@ export const CREWS = [
     callToAction: "무빙 크루에게 슬랙으로 커피 한 잔을 건네보세요!"
   },
   {
-    name: "아티",
-    track: "프론트엔드",
+    name: "대길",
+    track: "백엔드",
     cohort: "8기",
-    avatar: artiTodayCrewImage,
-    tags: ["#13층", "#여전사", "#팔굽혀펴기"],
-    headline: "안녕하세요 아티입니다",
-    desc: "13층 여전사 김아티입니다. <br>키는 확실하게 162이고 팔굽혀펴기 잘합니다.",
-    callToAction: "아티 크루에게 오늘도 강한 응원의 인사를 건네보세요!"
+    avatar: daegilTodayCrewImage,
+    tags: ["#13층", "#둠바족", "#수직적구조"],
+    headline: "안녕하세요 대길입니다",
+    desc: "13층 둠바족 대길입니다.<br>수직적 구조와 윗사람만 하는 성장을 지향합니다.<br>",
+    callToAction: "대길에게 오늘도 강한 응원의 인사를 건네보세요!"
   },
   {
     name: "요크",

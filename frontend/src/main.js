@@ -14,7 +14,7 @@ const API_BASE = window.location.hostname === 'localhost' || window.location.hos
 // App State
 let todayCrew = getTodayCrew();
 let likeCount = 0;
-let votedOption = localStorage.getItem(`lunch-vote-choice-${getTodayDateKey()}`);
+let votedOption = null;
 let voteResults = null;
 let footprintData = null;
 let guestbookEntries = loadGuestbookEntries();
@@ -25,6 +25,10 @@ let birthdayCarouselTimer = null;
 function getTodayDateKey() {
   const d = new Date();
   return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+function clearLegacyLunchVoteChoice() {
+  localStorage.removeItem(`lunch-vote-choice-${getTodayDateKey()}`);
 }
 
 function loadGuestbookEntries() {
@@ -171,14 +175,7 @@ async function fetchLunchVote() {
     const res = await fetch(`${API_BASE}/api/lunch-vote`);
     if (res.ok) {
       voteResults = await res.json();
-      // If total votes > 0, we can display results or if user already voted.
-      // For demo convenience, if user already voted (votedOption exists), show results.
-      // Or if there are active votes, always show results. The spec says:
-      // "투표 후 실시간 퍼센트 바 렌더링. 초기 구현은 mock 데이터 기반 렌더링 후 API 연동"
-      // If user hasn't voted yet, let them vote.
-      if (votedOption || voteResults.totalVotes > 0) {
-        updateLunchUI();
-      }
+      updateLunchUI();
     }
   } catch (e) {
     console.warn("Failed to fetch lunch votes from server", e);
@@ -186,19 +183,10 @@ async function fetchLunchVote() {
 }
 
 async function handleLunchVote(optionKey) {
-  votedOption = optionKey;
-  localStorage.setItem(`lunch-vote-choice-${getTodayDateKey()}`, optionKey);
-
-  // Optimistic UI change to showing results with mock increments
-  if (!voteResults) {
-    voteResults = {
-      totalVotes: 1,
-      options: { CORNER_C: 0, CORNER_D: 0, EAT_OUT: 0, LUNCH_BOX: 0 }
-    };
-  }
-  voteResults.options[optionKey] = (voteResults.options[optionKey] || 0) + 1;
-  voteResults.totalVotes++;
-  updateLunchUI();
+  const lunchButtons = document.querySelectorAll('.lunch-option-btn');
+  lunchButtons.forEach(btn => {
+    btn.disabled = true;
+  });
 
   try {
     const res = await fetch(`${API_BASE}/api/lunch-vote`, {
@@ -207,11 +195,17 @@ async function handleLunchVote(optionKey) {
       body: JSON.stringify({ menuOption: optionKey })
     });
     if (res.ok) {
+      votedOption = optionKey;
       voteResults = await res.json();
       updateLunchUI();
+    } else {
+      await fetchLunchVote();
     }
   } catch (e) {
     console.error("Failed to post lunch vote", e);
+    lunchButtons.forEach(btn => {
+      btn.disabled = false;
+    });
   }
 }
 
@@ -407,6 +401,7 @@ function updateVillageAndCoachUI() {
 }
 
 // Initial Boot
+clearLegacyLunchVoteChoice();
 renderSkeleton();
 fetchLikeCount();
 fetchLunchVote();
