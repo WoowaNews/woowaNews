@@ -1,3 +1,5 @@
+import daegilTodayCrewImage from '../assets/daegil-birthday-hall.png';
+
 export const CREWS = [
   {
     name: "무빙",
@@ -10,14 +12,14 @@ export const CREWS = [
     callToAction: "무빙 크루에게 슬랙으로 커피 한 잔을 건네보세요!"
   },
   {
-    name: "아티",
-    track: "프론트엔드",
+    name: "대길",
+    track: "백엔드",
     cohort: "8기",
-    avatar: "", // No avatar to test placeholder
-    tags: ["#리액트", "#디자인", "#커피"],
-    headline: "아티 크루, CSS 레이아웃의 마법을 부리다",
-    desc: "프론트엔드 트랙의 아티 크루는 오늘 바닐라 JS로 아름다운 애니메이션을 구현하는 데 성공했다. 아티 크루는 '사용자가 웹앱을 켜는 순간 와우를 외치게 만들고 싶었다'며 화려한 스펙터클을 선보였다. 그녀의 세련된 디자인 센스는 보도국의 극찬을 받았다.",
-    callToAction: "아티의 깃허브 피알을 리뷰하고 따뜻한 격려를 나눠주세요."
+    avatar: daegilTodayCrewImage,
+    tags: ["#13층", "#둠바족", "#수직적구조"],
+    headline: "안녕하세요 대길입니다",
+    desc: "13층 둠바족 대길입니다.<br>수직적 구조와 윗사람만 하는 성장을 지향합니다.<br>",
+    callToAction: "대길에게 오늘도 강한 응원의 인사를 건네보세요!"
   },
   {
     name: "요크",

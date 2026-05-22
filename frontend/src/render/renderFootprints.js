@@ -38,6 +38,12 @@ export function renderFootprints(footprintData = null) {
   const data = footprintData || MOCK_FOOTPRINTS;
   
   const cardsHtml = data.map(repo => {
+    const missionMeta = repo.repoName === 'java-janggi'
+      ? { title: '♟️ 장기 미션', track: '백엔드', trackClass: 'backend' }
+      : repo.repoName === 'javascript-movie-review'
+        ? { title: '🎥 영화 리뷰 미션', track: '프론트엔드', trackClass: 'frontend' }
+        : { title: '🛒 쇼핑 카트 미션', track: '안드로이드', trackClass: 'android' };
+
     const totalCommits = repo.totalCommits || 0;
     const totalComments = repo.totalComments || 0;
     const participatingCrews = repo.participatingCrews || 0;
@@ -59,13 +65,10 @@ export function renderFootprints(footprintData = null) {
     return `
       <div class="footprint-mission-card">
         <div class="footprint-card-header">
-          <span class="footprint-mission-label">${
-            repo.repoName === 'java-janggi' 
-              ? '♟️ 장기 미션' 
-              : repo.repoName === 'javascript-movie-review' 
-                ? '🎥 영화 리뷰 미션' 
-                : '🛒 쇼핑 카트 미션'
-          }</span>
+          <div class="footprint-mission-title-group">
+            <span class="footprint-mission-label">${missionMeta.title}</span>
+            <span class="footprint-track-sticker ${missionMeta.trackClass}">${missionMeta.track}</span>
+          </div>
           <span class="footprint-repo-badge">${repo.repoName}</span>
         </div>
         <div class="footprint-stats-grid">
@@ -110,6 +113,7 @@ export function renderFootprints(footprintData = null) {
 
   return `
     <div class="footprint-section-header">
+      <span class="footprint-section-badge">미션 발자국</span>
       <div class="footprint-section-title-wrap">
         <h2 class="news-section-box-title" style="border-bottom: none; margin-bottom: 0;">👣 우리가 함께 걸어온 발자국</h2>    
       </div>
