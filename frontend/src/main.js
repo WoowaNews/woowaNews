@@ -1,7 +1,7 @@
 import './styles.css';
 import { renderHeader } from './render/renderHeader.js';
 import { renderBreakingNews, getTodayCrew } from './render/renderBreakingNews.js';
-import { renderMidSections } from './render/renderMidSections.js';
+import { getJuneBirthdayCrewCount, renderMidSections } from './render/renderMidSections.js';
 import { renderTrackStatus } from './render/renderTrackStatus.js';
 import { renderVillageAndCoach } from './render/renderVillageAndCoach.js';
 import { renderFootprints } from './render/renderFootprints.js';
@@ -17,11 +17,32 @@ let likeCount = 0;
 let votedOption = localStorage.getItem(`lunch-vote-choice-${getTodayDateKey()}`);
 let voteResults = null;
 let footprintData = null;
+let guestbookEntries = loadGuestbookEntries();
+let birthdaySlideIndex = 0;
+let birthdayCarouselTimer = null;
 
 // Helpers
 function getTodayDateKey() {
   const d = new Date();
   return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+function loadGuestbookEntries() {
+  try {
+    return JSON.parse(localStorage.getItem('today-word-guestbook') || '[]');
+  } catch {
+    localStorage.removeItem('today-word-guestbook');
+    return [];
+  }
+}
+
+function saveGuestbookEntries() {
+  localStorage.setItem('today-word-guestbook', JSON.stringify(guestbookEntries));
+}
+
+function getCurrentKoreanTimeLabel() {
+  const d = new Date();
+  return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
 // Render the main skeleton
@@ -41,7 +62,7 @@ function renderSkeleton() {
       <div class="double-line"></div>
       <footer class="newspaper-footer">
         <p>우아한 뉴스 | 우테코 8기 보도국 | 발행인: 우테코 크루 일동</p>
-        <p class="footer-disclaimer">※ 본 신문은 우아한테크코스 8기 교육용 데모 웹앱으로, 실제 보도 내용과는 무관할 수 있습니다. 무단 전재 시 커피 1잔의 벌금이 부과됩니다.</p>
+        <p class="footer-disclaimer">※ 본 신문은 우아한테크코스 8기 교육용 데모 웹앱으로, 실제 보도 내용과는 무관할 수 있습니다. 무단 전재 시 추노하러갑니다.</p>
       </footer>
     </div>
   `;
@@ -49,9 +70,9 @@ function renderSkeleton() {
   // Render static/initial contents
   document.getElementById('section-header').innerHTML = renderHeader();
   document.getElementById('section-breaking').innerHTML = renderBreakingNews(todayCrew, likeCount);
-  document.getElementById('section-mid').innerHTML = renderMidSections(voteResults, votedOption);
+  document.getElementById('section-mid').innerHTML = renderMidSections(voteResults, votedOption, birthdaySlideIndex);
   document.getElementById('section-track').innerHTML = renderTrackStatus();
-  document.getElementById('section-bottom').innerHTML = renderVillageAndCoach();
+  document.getElementById('section-bottom').innerHTML = renderVillageAndCoach(guestbookEntries);
   document.getElementById('section-footprints').innerHTML = renderFootprints(footprintData);
 
   setupEventListeners();
@@ -71,6 +92,14 @@ function setupEventListeners() {
     midContainer.querySelectorAll('.lunch-option-btn').forEach(btn => {
       btn.addEventListener('click', () => handleLunchVote(btn.dataset.option));
     });
+
+    midContainer.querySelectorAll('[data-birthday-direction]').forEach(btn => {
+      btn.addEventListener('click', () => handleBirthdaySlideMove(Number(btn.dataset.birthdayDirection)));
+    });
+
+    midContainer.querySelectorAll('[data-birthday-index]').forEach(btn => {
+      btn.addEventListener('click', () => handleBirthdaySlideSelect(Number(btn.dataset.birthdayIndex)));
+    });
   }
 
   // Github Sync button
@@ -78,6 +107,14 @@ function setupEventListeners() {
   if (syncBtn) {
     syncBtn.addEventListener('click', handleGithubSync);
   }
+
+  // Guestbook form
+  const guestbookForm = document.getElementById('guestbook-form');
+  if (guestbookForm) {
+    guestbookForm.addEventListener('submit', handleGuestbookSubmit);
+  }
+
+  startBirthdayCarousel();
 }
 
 // 1. Crew Like API call
@@ -173,8 +210,44 @@ async function handleLunchVote(optionKey) {
 function updateLunchUI() {
   const container = document.getElementById('section-mid');
   if (container) {
-    container.innerHTML = renderMidSections(voteResults, votedOption);
+    container.innerHTML = renderMidSections(voteResults, votedOption, birthdaySlideIndex);
     setupEventListeners(); // re-bind remaining buttons
+  }
+}
+
+function handleBirthdaySlideMove(direction) {
+  const count = getJuneBirthdayCrewCount();
+  if (count <= 1) return;
+
+  birthdaySlideIndex = (birthdaySlideIndex + direction + count) % count;
+  updateMidSectionsUI();
+}
+
+function handleBirthdaySlideSelect(index) {
+  const count = getJuneBirthdayCrewCount();
+  if (count <= 1 || Number.isNaN(index)) return;
+
+  birthdaySlideIndex = ((index % count) + count) % count;
+  updateMidSectionsUI();
+}
+
+function startBirthdayCarousel() {
+  const count = getJuneBirthdayCrewCount();
+  clearInterval(birthdayCarouselTimer);
+
+  if (count <= 1) return;
+
+  birthdayCarouselTimer = setInterval(() => {
+    birthdaySlideIndex = (birthdaySlideIndex + 1) % count;
+    updateMidSectionsUI();
+  }, 4500);
+}
+
+function updateMidSectionsUI() {
+  const container = document.getElementById('section-mid');
+  if (container) {
+    container.innerHTML = renderMidSections(voteResults, votedOption, birthdaySlideIndex);
+    setupEventListeners();
   }
 }
 
@@ -254,6 +327,37 @@ function updateFootprintsUI() {
   if (container) {
     container.innerHTML = renderFootprints(footprintData);
     setupEventListeners(); // re-bind sync button
+  }
+}
+
+function handleGuestbookSubmit(event) {
+  event.preventDefault();
+
+  const messageInput = document.getElementById('guestbook-message-input');
+  const message = messageInput?.value.trim();
+
+  if (!message) {
+    messageInput?.focus();
+    return;
+  }
+
+  guestbookEntries = [
+    {
+      message,
+      createdAt: getCurrentKoreanTimeLabel()
+    },
+    ...guestbookEntries
+  ].slice(0, 6);
+
+  saveGuestbookEntries();
+  updateVillageAndCoachUI();
+}
+
+function updateVillageAndCoachUI() {
+  const container = document.getElementById('section-bottom');
+  if (container) {
+    container.innerHTML = renderVillageAndCoach(guestbookEntries);
+    setupEventListeners();
   }
 }
 

@@ -92,11 +92,11 @@ export function renderFootprints(footprintData = null) {
             <span class="footprint-rank-value">${firstPrCrew} <span class="footprint-rank-value-sub">(${firstPrDate} ${firstPrTime})</span></span>
           </div>
           <div class="footprint-rank-item">
-            <span class="footprint-rank-label">⚡ 최속 머지 기록</span>
+            <span class="footprint-rank-label">⚡ 첫 머지 크루</span>
             <span class="footprint-rank-value">${fastestMergeCrew} <span class="footprint-rank-value-sub">(${fastestMergeDuration})</span></span>
           </div>
           <div class="footprint-rank-item">
-            <span class="footprint-rank-label">💬 최다 코멘트 크루</span>
+            <span class="footprint-rank-label">💬 최다 코멘트 리뷰어</span>
             <span class="footprint-rank-value">${mostCommentsCrew} <span class="footprint-rank-value-sub">(${mostCommentsCount}개)</span></span>
           </div>
           <div class="footprint-rank-item">
@@ -111,13 +111,9 @@ export function renderFootprints(footprintData = null) {
   return `
     <div class="footprint-section-header">
       <div class="footprint-section-title-wrap">
-        <span class="news-section-box-badge" style="background-color: #0369a1">미션 발자국</span>
-        <h2 class="news-section-box-title" style="border-bottom: none; margin-bottom: 0;">👣 우리가 함께 걸어온 발자국</h2>
+        <h2 class="news-section-box-title" style="border-bottom: none; margin-bottom: 0;">👣 우리가 함께 걸어온 발자국</h2>    
       </div>
       <p class="footprint-intro-desc">PR 생성부터 머지까지, 크루들의 도전 기록</p>
-    </div>
-    <div class="footprint-sync-container">
-      <button class="sync-button" id="sync-github-btn">🔄 깃허브 데이터 동기화</button>
     </div>
     <div class="footprint-missions-grid" id="footprint-missions-grid">
       ${cardsHtml}
